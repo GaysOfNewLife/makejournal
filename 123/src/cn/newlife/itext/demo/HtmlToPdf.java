@@ -68,6 +68,9 @@ public class HtmlToPdf {
 		cssResolver.addCss(cssFile);
 
 		XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider();
+		//可以设置成想要的字体，这里比较简单
+		//windows的字体路径在C:\Windows\Fonts下
+		//linux 不清楚
 		fontProvider.register("C:/windows/fonts/GARA.TTF");
 		fontProvider.register("C:/windows/fonts/GARAIT.TTF");
 		fontProvider.register("C:/windows/fonts/GARABD.TTF");
