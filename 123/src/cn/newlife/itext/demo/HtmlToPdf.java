@@ -25,15 +25,32 @@ public class HtmlToPdf {
 	private String html_source;
 	private String save_target_dir;
 
+	/**
+	 * @param html_source
+	 *            需要转换的html文件路径
+	 * @param save_target_dir
+	 *            转换后pdf要保存的文件夹
+	 * */
 	public HtmlToPdf(String html_source, String save_target_dir) {
 		this.html_source = html_source;
 		this.save_target_dir = save_target_dir;
 	}
 
+	/**
+	 * @param pdf_file_name
+	 *            保存pdf的文件名
+	 * */
 	public void parseHtml2Pdf(String pdf_file_name) throws Exception {
 		parseHtml2Pdf(pdf_file_name, null);
 	}
 
+	/**
+	 * @param pdf_file_name
+	 *            保存pdf的文件名
+	 * @param cssfile_source
+	 *            html关联的css文件路径
+	 * 
+	 * */
 	public void parseHtml2Pdf(String pdf_file_name, String cssfile_source)
 			throws Exception {
 		if (html_source == null || "".equals(html_source)
