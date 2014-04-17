@@ -47,40 +47,37 @@ public class HtmlToPdf {
 				new FileOutputStream(save_target_dir + "\\" + pdf_file_name));
 		document.open();
 		XMLWorkerHelper helper = XMLWorkerHelper.getInstance();
-		if (cssfile_source != null && !"".equals(cssfile_source)
-				&& new File(cssfile_source).exists()) {
-			parseHtmlWithCSS(helper, document, pdfWriter, html_source,
-					cssfile_source);
-
-		} else {
-			helper.parseXHtml(pdfWriter, document, new FileInputStream(
-					html_source));
-		}
-		document.close();
-	}
-
-	private void parseHtmlWithCSS(XMLWorkerHelper helper, Document document,
-			PdfWriter pdfWriter, String html_source, String cssfile_source)
-			throws Exception {
-
-		CSSResolver cssResolver = new StyleAttrCSSResolver();
-		CssFile cssFile = helper.getCSS(new FileInputStream(cssfile_source));
-		cssResolver.addCss(cssFile);
-
 		XMLWorkerFontProvider fontProvider = new XMLWorkerFontProvider();
-		//可以设置成想要的字体，这里比较简单
-		//windows的字体路径在C:\Windows\Fonts下
-		//linux 不清楚
+		// 可以设置成想要的字体，这里比较简单
+		// windows的字体路径在C:\Windows\Fonts下
+		// linux 不清楚
 		fontProvider.register("C:/windows/fonts/GARA.TTF");
 		fontProvider.register("C:/windows/fonts/GARAIT.TTF");
 		fontProvider.register("C:/windows/fonts/GARABD.TTF");
 		fontProvider.addFontSubstitute("lowagie", "garamond");
 		CssAppliers cssAppliers = new CssAppliersImpl(fontProvider);
 		HtmlPipelineContext htmlContext = new HtmlPipelineContext(cssAppliers);
-		
+
 		htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
 		PdfWriterPipeline pdf = new PdfWriterPipeline(document, pdfWriter);
 		HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+
+		if (cssfile_source != null && !"".equals(cssfile_source)
+				&& new File(cssfile_source).exists()) {
+			parseHtmlWithCSS(helper, html, html_source, cssfile_source);
+		} else {
+			XMLWorker worker = new XMLWorker(html, true);
+			XMLParser p = new XMLParser(worker);
+			p.parse(new FileInputStream(html_source));
+		}
+		document.close();
+	}
+
+	private void parseHtmlWithCSS(XMLWorkerHelper helper, HtmlPipeline html,
+			String html_source, String cssfile_source) throws Exception {
+		CSSResolver cssResolver = new StyleAttrCSSResolver();
+		CssFile cssFile = helper.getCSS(new FileInputStream(cssfile_source));
+		cssResolver.addCss(cssFile);
 		CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
 		XMLWorker worker = new XMLWorker(css, true);
 		XMLParser p = new XMLParser(worker);
