@@ -43,3 +43,4 @@ Spring依赖包：
 commons-logging	日志
 jstl
 jstl-api
+aopalliance
