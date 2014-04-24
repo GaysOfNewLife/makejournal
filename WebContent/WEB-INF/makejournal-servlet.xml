@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+ http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+ http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+ http://www.springframework.org/schema/mvc  
+ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- 扫描该包下面的所有的类 -->
+	<context:component-scan base-package="cn.com.newlife.makejournal.controller" />
+
+	<!-- 启动MVC注解 -->
+	<mvc:annotation-driven />
+
+	<!-- 拦截器配置，不拦截static_resource下面（js，css，image） 不拦截所有jsp -->
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/*" /> <bean class="com.wdh.sm.filter.LoginFilter" /> </mvc:interceptor> </mvc:interceptors> -->
+	<!-- 静态资源配置，不被拦截 -->
+	<mvc:default-servlet-handler />
+	<mvc:resources mapping="/javascript/**" location="/static_resources/javascript/" />
+	<mvc:resources mapping="/styles/**" location="/static_resources/css/" />
+	<mvc:resources mapping="/images/**" location="/static_resources/images/" />
+
+	<!-- 试图配置 -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
+	<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->
+	<!-- <property name="defaultErrorView" value="error"></property> -->
+	<!-- 定义异常处理页面用来获取异常信息的变量名，默认名为exception -->
+	<!-- <property name="exceptionAttribute" value="ex"></property> -->
+	<!-- </bean> -->
+
+	<!-- ajax配置 需要第三方jar：jackson-core-lgpl-1.6.9，jackson-mapper-lgpl-1.6.9 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> <property name="messageConverters"> <list> <ref bean="mappingJacksonHttpMessageConverter" /> </list> </property> 
+		</bean> <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" /> -->
+</beans>
