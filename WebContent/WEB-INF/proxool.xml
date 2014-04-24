@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the proxool configuration can be embedded within your own application's. 
+	Anything outside the "proxool" tag is ignored. -->
+<proxool-config>
+	<proxool>
+		<alias>testDB</alias>
+		<driver-url>jdbc:mysql://localhost:3306/test</driver-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver-properties>
+			<property name="user" value="root" />
+			<property name="password" value="root" />
+		</driver-properties>
+		<maximum-connection-count>100</maximum-connection-count>
+		<minimum-connection-count>10</minimum-connection-count>
+		<house-keeping-sleep-time>90000</house-keeping-sleep-time>
+		<maximum-new-connections>10</maximum-new-connections>
+		<prototype-count>5</prototype-count>
+		<test-before-use>true</test-before-use>
+		<house-keeping-test-sql>select sysdate from dual
+		</house-keeping-test-sql>
+	</proxool>
+</proxool-config>

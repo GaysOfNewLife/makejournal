@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/applicationContext-*.xml</param-value>
@@ -8,16 +10,56 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<!-- servlet begin -->
 	<!-- spring控制器 -->
 	<servlet>
 		<servlet-name>makejournal</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<!-- proxool -->
+	<servlet>
+		<servlet-name>ServletConfigurator</servlet-name>
+		<servlet-class>org.logicalcobwebs.proxool.configuration.ServletConfigurator</servlet-class>
+		<init-param>
+			<param-name>xmlFile</param-name>
+			<param-value>/WEB-INF/proxool.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>Admin</servlet-name>
+		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet</servlet-class>
+	</servlet>
+	<!-- servlet end -->
+	<!-- servlet-mapping begin -->
 	<servlet-mapping>
 		<servlet-name>makejournal</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Admin</servlet-name>
+		<url-pattern>/admin</url-pattern>
+	</servlet-mapping>
+	<!-- servlet-mapping end -->
+	<!-- 配置受保护域，只有Tomcat管理员才能察看连接池的信息 -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>proxool</web-resource-name>
+			<url-pattern>/admin</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>manager</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>proxool manager Application</realm-name>
+	</login-config>
+	<security-role>
+		<description>The role that is required to log in to the Manager Application</description>
+		<role-name>manager</role-name>
+	</security-role>
 	<display-name>makejournal</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
